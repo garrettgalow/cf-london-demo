@@ -24,7 +24,7 @@ resource "kubernetes_secret" "db_conn" {
    }
 }
 
-output "gcp_lb_ip" {
+output "gke_lb_ip" {
    value = "${kubernetes_service.expose_mm.load_balancer_ingress.0.ip}"
 }
 

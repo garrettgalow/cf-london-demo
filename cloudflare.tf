@@ -1,8 +1,11 @@
 provider "cloudflare" {
    org_id = "a67e14daa5f8dceeb91fe5449ba496eb"
+ # Auth is handled through ENV VARS
+ # email = ""
+ # token = ""
 }
 
-module gcp {
+module gke {
    source = "./gke"
 }
 
@@ -32,7 +35,7 @@ resource "cloudflare_record" "aks_ip" {
 resource "cloudflare_record" "gke_ip" {
    domain = "${var.zone}"
    name = "gke"
-   value = "${module.gcp.gcp_lb_ip}"
+   value = "${module.gke.gke_lb_ip}"
    type = "A"
    ttl = 1
    proxied = true
@@ -78,7 +81,7 @@ resource "cloudflare_load_balancer_pool" "gke_pool" {
    name = "gke-pool"
    origins {
       name = "gke"
-      address = "${module.gcp.gcp_lb_ip}"
+      address = "${module.gke.gke_lb_ip}"
       enabled = true
    }
    description = "Google Kubernetes Origin"

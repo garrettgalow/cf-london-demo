@@ -1,0 +1,5 @@
+.secrets/
+.terraform/
+aws.tf.bk
+terraform.tfstate
+terraform.tfstate.backup
