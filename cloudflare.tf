@@ -12,9 +12,9 @@ module aks {
    client_secret = "${var.client_secret}"
 }
 
-module eks {
-   source = "./eks"
-}
+#module eks {
+#   source = "./eks"
+#}
 
 variable "zone" {
    default = "cloudflare.london"
@@ -26,6 +26,7 @@ resource "cloudflare_record" "aks_ip" {
    value = "${module.aks.aks_lb_ip}"
    type = "A"
    ttl = 1
+   proxied = true
 }
 
 resource "cloudflare_record" "gke_ip" {
@@ -34,6 +35,7 @@ resource "cloudflare_record" "gke_ip" {
    value = "${module.gcp.gcp_lb_ip}"
    type = "A"
    ttl = 1
+   proxied = true
 }
 
 resource "cloudflare_load_balancer_monitor" "gke_monitor" {
