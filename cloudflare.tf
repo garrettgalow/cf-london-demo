@@ -89,7 +89,7 @@ resource "cloudflare_load_balancer_pool" "gke_pool" {
 
 resource "cloudflare_load_balancer" "chat_demo" {
    zone = "cloudflare.london"
-   name = "cloudflare.london"
+   name = "prod.cloudflare.london"
    default_pool_ids = ["${cloudflare_load_balancer_pool.aks_pool.id}","${cloudflare_load_balancer_pool.gke_pool.id}"]
    fallback_pool_id = "${cloudflare_load_balancer_pool.aks_pool.id}"
    description = "Load Balancer for MatterMost Chat"
