@@ -43,7 +43,7 @@ resource "cloudflare_load_balancer_monitor" "gke_monitor" {
    expected_codes = "2xx"
    path = "/api/v4/system/ping"
    timeout = 5
-   interval = 30
+   interval = 10
    retries = 1
    description = "GKE Monitor"
 }
@@ -54,7 +54,7 @@ resource "cloudflare_load_balancer_monitor" "aks_monitor" {
    expected_codes = "2xx"
    path = "/api/v4/system/ping"
    timeout = 5
-   interval = 30
+   interval = 10
    retries = 1
    description = "AKS Monitor"
 }
