@@ -15,10 +15,6 @@ module aks {
    client_secret = "${var.client_secret}"
 }
 
-#module eks {
-#   source = "./eks"
-#}
-
 variable "zone" {
    default = "cloudflare.london"
 }
@@ -78,12 +74,12 @@ resource "cloudflare_load_balancer_pool" "local_pool" {
    name = "local-pool"
    origins {
       name = "argo-tunnel-1"
-      address = ""
+      address = "1.2.3.4"
       enabled = true
    }
    origins {
       name = "argo-tunnel-2"
-      address = ""
+      address = "1.2.3.5"
       enabled = true
    }
    description = "Local Origin"
@@ -101,7 +97,7 @@ resource "cloudflare_load_balancer_pool" "aks_pool" {
       enabled = true
    }
    description = "Azure Kubernetes Origin"
-   enabled = false
+   enabled = true
    minimum_origins = 1
    notification_email = "gg@cloudflare.com"
    monitor = "${cloudflare_load_balancer_monitor.aks_monitor.id}"
@@ -115,7 +111,7 @@ resource "cloudflare_load_balancer_pool" "gke_pool" {
       enabled = true
    }
    description = "Google Kubernetes Origin"
-   enabled = false
+   enabled = true
    minimum_origins = 1
    notification_email = "gg@cloudflare.com"
    monitor = "${cloudflare_load_balancer_monitor.gke_monitor.id}"
