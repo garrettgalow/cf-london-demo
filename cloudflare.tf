@@ -96,6 +96,6 @@ resource "cloudflare_load_balancer" "chat_demo" {
    proxied = true
    region_pools {
       region = "WEU"
-      pool_ids = ["${cloudflare_load_balancer_pool.gke_pool.id}"]
+      pool_ids = ["${cloudflare_load_balancer_pool.aks_pool.id}"]
    }
 }
