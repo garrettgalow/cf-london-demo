@@ -7,23 +7,6 @@ provider "kubernetes"{
    client_key = "${base64decode(azurerm_kubernetes_cluster.k8s.kube_config.0.client_key)}"
 }
 
-resource "kubernetes_secret" "db_conn" {
-   metadata {
-      name = "mattermost-env"
-      namespace = "default"
-   }
-
-   type = "Opaque"
-
-   data {
-      "db-host" = "35.230.114.138"
-      "db-port" = "80"
-      "mm-username" = "mmuser"
-      "mm-password" = "mmuser_password"
-      "mm-dbname" = "mattermost"
-   }
-}
-
 output "aks_lb_ip" {
    value = "${kubernetes_service.expose_mm.load_balancer_ingress.0.ip}"
 }
@@ -122,3 +105,19 @@ resource "kubernetes_pod" "mm_pod" {
    }
 }
 
+resource "kubernetes_secret" "db_conn" {
+   metadata {
+      name = "mattermost-env"
+      namespace = "default"
+   }
+
+   type = "Opaque"
+
+   data {
+      "db-host" = "35.230.114.138"
+      "db-port" = "80"
+      "mm-username" = "mmuser"
+      "mm-password" = "mmuser_password"
+      "mm-dbname" = "mattermost"
+   }
+}

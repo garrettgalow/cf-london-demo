@@ -59,36 +59,6 @@ resource "cloudflare_load_balancer_monitor" "aks_monitor" {
    description = "AKS Monitor"
 }
 
-resource "cloudflare_load_balancer_monitor" "local_monitor" {
-   method = "GET"
-   expected_body = "OK"
-   expected_codes = "2xx"
-   path = "/api/v4/system/ping"
-   timeout = 5
-   interval = 30
-   retries = 1
-   description = "Local Monitor"
-}
-
-resource "cloudflare_load_balancer_pool" "local_pool" {
-   name = "local-pool"
-   origins {
-      name = "argo-tunnel-1"
-      address = "1.2.3.4"
-      enabled = true
-   }
-   origins {
-      name = "argo-tunnel-2"
-      address = "1.2.3.5"
-      enabled = true
-   }
-   description = "Local Origin"
-   enabled = true
-   minimum_origins = 1
-   notification_email = "gg@cloudflare.com"
-   monitor = "${cloudflare_load_balancer_monitor.local_monitor.id}"
-}
-
 resource "cloudflare_load_balancer_pool" "aks_pool" {
    name = "aks-pool"
    origins {
@@ -120,8 +90,8 @@ resource "cloudflare_load_balancer_pool" "gke_pool" {
 resource "cloudflare_load_balancer" "chat_demo" {
    zone = "cloudflare.london"
    name = "cloudflare.london"
+   default_pool_ids = ["${cloudflare_load_balancer_pool.aks_pool.id}","${cloudflare_load_balancer_pool.gke_pool.id}"]
    fallback_pool_id = "${cloudflare_load_balancer_pool.aks_pool.id}"
-   default_pool_ids = ["${cloudflare_load_balancer_pool.aks_pool.id}","${cloudflare_load_balancer_pool.gke_pool.id}","${cloudflare_load_balancer_pool.local_pool.id}"]
    description = "Load Balancer for MatterMost Chat"
    proxied = true
    region_pools {

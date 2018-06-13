@@ -3,8 +3,6 @@ provider "kubernetes"{
    username = "admin"
    password = "CCQ130VWtuOzGaW4"
    cluster_ca_certificate = "${file(".secrets/cluster_ca_cert_gcp.pem")}"
-#   client_certificate = "${file(".secrets/cluster_ca_cert_gcp.pem")}"
-#   client_key = "${file(".secrets/cluster_ca_cert_gcp.pem")}"
 }
 
 resource "kubernetes_secret" "db_conn" {
